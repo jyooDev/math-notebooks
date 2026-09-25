@@ -166,7 +166,7 @@
 \renewcommand{\headrulewidth}{0pt}
 
 % Center header text: short paper title
-\chead{\MakeUppercase{\scriptsize Short paper title}}
+\chead{\MakeUppercase{\scriptsize Singular Value Decomposition Notes}}
 
 % Empty left and right header text
 \lhead{}\rhead{}
@@ -207,24 +207,9 @@ Singular Value Decomposition Notes}}
   Therefore, $ker(A) \subseteq ker(A^T A)$. Hence, $ker(A^T A) = ker(A)$ and rank($A^T A$) = rank($A$).
 \end{proof}
 
-\begin{lemma}
+\begin{lemma}[Spectral Theorem for Symmetric Matrices]\label{lem:spectral_theorem_for_symmetric_matrices}
   Let $P \in M_{n \times n}(\R)$ be a symmetric matrix. Then there exists an orthogonal matrix $Q \in M_{n \times n}(\R)$ such that $Q^T P Q = D$ where $D \in M_{n \times n}(\R)$ is a diagonal matrix with the eigenvalues of $P$ on the diagonal.
 \end{lemma}
-\begin{proof}
-  Let $\{\sigma_1, \sigma_2, \ldots, \sigma_n\}$ be the eigenvalues of $P$. Then there exists a basis of eigenvectors $\{b_1, b_2, \ldots, b_n\}$ of $P$ such that $P b_i = \sigma_i b_i$ for $i = 1, 2, \ldots, n$. \\
-  Define $Q$ to be a matrix of eigenvectors $\{b_1, b_2, \ldots, b_n\}$ of $P$ as columns. By definition of a basis, $Q$ is an orthogonal matrix and $P \cdot Q  = \begin{vmatrix}
-  \sigma_1 b_1 & \sigma_2 b_2 & \ldots & \sigma_n b_n
-  \end{vmatrix}$. Then we have
-  \[
-    Q^T P Q = Q^T \begin{vmatrix}
-    \sigma_1 b_1 & \sigma_2 b_2 & \ldots & \sigma_n b_n
-    \end{vmatrix} = \begin{vmatrix}
-    \sigma_1 Q^T b_1 & \sigma_2 Q^T b_2 & \ldots & \sigma_n Q^T b_n
-    \end{vmatrix} = \begin{vmatrix}
-    \sigma_1 e_1 & \sigma_2 e_2 & \ldots & \sigma_n e_n
-    \end{vmatrix} = D
-  \]
-\end{proof}
 
 \begin{theorem}
   Let $A \in M_{p \times n}(\R)$ be a real matrix with rank($A$) = $m$. Then there exists an orthogonal matrix $B \in M_{p \times m}(\R)$ and an orthogonal matrix $C \in M_{n \times m}(\R)$ such that 
@@ -235,18 +220,41 @@ Singular Value Decomposition Notes}}
 \end{theorem}
 \begin{proof}
   We will construct the matrices $B$, $C$, and $D$ explicitly.\\
-  Let $(\sigma_1, \sigma_2, \ldots, \sigma_n)$ be the singular values of $A$.
+  Let $(\sigma_1, \sigma_2, \ldots, \sigma_m)$ be the singular values of $A$.
   Define $D$ to be the diagonal matrix with the singular values on the diagonal:
   \[
     D = \text{diag}(\sigma_1, \sigma_2, \ldots, \sigma_m).
   \]
   Since $rank(A) = m$, we know that $\sigma_1, \sigma_2, \ldots, \sigma_m$ are positive singular values of $A$ and thus $D$ is invertible.\\
-  Next, define $B = A \cdot C \cdot N$ where
+  Since $A^TA$ is symmetric, there exists an orthogonal matrix $Q \in M_{n \times n}(\R)$ such that $Q^T A^T A Q = E$, then $A^TA = Q E Q^T$ where $E$ is a diagonal matrix with the eigenvalues of $A^TA$ on the diagonal, by Lemma~\ref{lem:spectral_theorem_for_symmetric_matrices}. Define
   \[
-    N = D^{-1} = \text{diag}(\sigma_1^{-1}, \sigma_2^{-1}, \ldots, \sigma_m^{-1}) \in M_{m \times m}(\R).
-  \] and
-  $B$ is an orthogonal matrix since $B^T B = I_m$.\\
-  Finally, we have
+    Q = \begin{pmatrix} q_1 & q_2 & \ldots & q_n \end{pmatrix}, \quad \text{where } q_i \text{ are the eigenvectors of } A^TA.
+  \]
+  Then we can define $C$ be the matrix of the first $m$ columns of $Q$. By definition of $Q$, $C^T C = I_m$.\\
+  Next, define $N = D^{-1} = \text{diag}(\sigma_1^{-1}, \sigma_2^{-1}, \ldots, \sigma_m^{-1}) \in M_{m \times m}(\R)$ and $B = A \cdot C \cdot N$.\\
+  Now we will show that $B^T B = I_m$.\\
+  \begin{align*}
+    B^TB &= (A C N)^T (A C N) = N^T C^T A^T A C N \\
+         &= N^T C^T Q E Q^T C N = N^T D^2 N = I_m
+  \end{align*}
+  Note that $C^T Q = \begin{pmatrix} I_m & 0 \end{pmatrix}$ and $Q^T C = \begin{pmatrix} I_m \\ 0 \end{pmatrix}$, so $C^T Q E Q^T C$ picks out the top-left $m \times m$ block of $E$, which equals $D^2 = \text{diag}(\sigma_1^2, \ldots, \sigma_m^2)$. Therefore, $N^T D^2 N = D^{-1} D^2 D^{-1} = I_m$.\\
+  Finally, we will show that $A = B D C^T$.
+  \[
+    B D C^T = (A C N) D C^T = A C (N D) C^T = A C I_m C^T = A C C^T
+  \]
+  We know that $A^T A = Q E Q^T$ and $C$ is the first $m$ columns of $Q$, then $A^T A = C D^2 C^T$. Then we see
+  \[
+    A^T A C C^T = C D^2 C^T C C^T = C D^2 I_m C^T = C D^2 C^T = A^T A
+  \]
+  Thus
+  \[
+    A^T A (I_n - C C^T) = 0 \implies \text{range}(I - C C^T) \subseteq \ker(A^T A) = \ker(A) \; (\text{by Lemma 1})
+  \]
+  Thus
+  \[
+    A (I_n - C C^T) = 0 \implies A - ACC^T = 0 \implies A = ACC^T.
+  \]
+  Therefore, $A = B D C^T$.
 \end{proof}
 
 % --- Bibliography ---
