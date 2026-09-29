@@ -257,6 +257,40 @@ Singular Value Decomposition Notes}}
   Therefore, $A = B D C^T$.
 \end{proof}
 
+\newpage
+\begin{theorem}[Theorem 7.92 Best Approximation by linear map whose range has dimension $ \leq k$]
+  Let $f : V \to W$ be a linear transformation over $\R$ with $dim(V) = n$ and $dim(W) = p$. \\
+  Let $\sigma_1 \geq \sigma_2 \geq \ldots \geq \sigma_m > 0$ be the positive singular values of $f$ and let $k \in \{1, \ldots, m - 1\}$. Then among all linear transformations $g : V \to W$ with $rank(g) \leq k$, the smallest norm of the difference $\| f - g \|$ is $\sigma_{k + 1}$. This minimum is achieved by the $g$ whose matrix representation is $G = B D_k C^T$, where
+  \[
+    D_k = \begin{pmatrix} \diag(\sigma_1, \ldots, \sigma_k) & 0 \\ 0 & 0 \end{pmatrix}
+  \]
+  and $A = B D C^T$ with $D = \diag(\sigma_1, \ldots, \sigma_m)$ is the singular value decomposition of $f$.
+
+  \begin{remark}
+    The best rank-$k$ approximation of a matrix $A$ is obtained by keeping only the top $k$ singular values and discarding the rest.
+  \end{remark}
+  
+  \begin{example}
+    Let $A = \diag(d_1, d_2, \ldots, d_n) \in M_{n \times n}(\R)$ with $rank(A) = m$.
+    \begin{proof}
+      WLOG, $|d_1| \geq |d_2| \geq \ldots \geq |d_n|$. Then the singular values of $A$ are $\sigma_i = |d_i|$.\\
+      First, we will show that $\min\{\| A - S \| : \text{rank}(S) \leq k\} \leq \sigma_{k + 1}$.\\
+      Let $G = \diag(d_1, d_2, \ldots, d_k, 0, \ldots, 0)$. Then $\text{rank}(G) = k$ and $\| A - G \| = \| \diag(0, \ldots, 0, d_{k + 1}, \ldots, d_n) \| = \max(|d_{k + 1}|, \ldots, |d_n|) = |d_{k + 1}| = \sigma_{k + 1}$.\\
+      So $\min \{\| A - S \| : \text{rank}(S) \leq k\} \leq \| A - G \| = \sigma_{k + 1}$.\\
+      Now we will show that $\min\{\| A - S \| : \text{rank}(S) \leq k\} \geq \sigma_{k + 1}$.\\
+      Let $H$ be any matrix with $\text{rank}(H) \leq k$. Then $\text{nullity}(H) = n - \text{rank}(H) \geq n - k$. Since $\dim(\ker(H)) \geq n - k$ and $\dim(\text{span}(e_1, \ldots, e_{k + 1})) = k + 1$, their dimensions sum to at least $n + 1 > n$, so there exists a non-zero vector $v \in \ker(H) \cap \text{span}(e_1, \ldots, e_{k + 1})$. Then $(A - H)v = Av - Hv = Av = A(v_1 e_1 + \ldots + v_{k + 1} e_{k + 1}) = d_1 v_1 e_1 + \ldots + d_{k+1} v_{k+1} e_{k+1}$. Also
+      \[
+        \| Av \|^2 = \sum_{i=1}^{k + 1} |d_i|^2 |v_i|^2 \geq |d_{k + 1}|^2 \sum_{i=1}^{k + 1} |v_i|^2 = |d_{k + 1}|^2 \| v \|^2,
+      \]
+      which implies $\| Av \| \geq |d_{k + 1}| \| v \|$. Therefore,
+      \[
+        \| (A - H)v \| = \| Av \| \geq |d_{k + 1}| = \sigma_{k + 1}.
+      \]
+      Hence $\min\{\| A - S \| : \text{rank}(S) \leq k\} \geq \sigma_{k + 1}$, and combining both bounds, $\min\{\| A - S \| : \text{rank}(S) \leq k\} = \sigma_{k + 1}$.
+    \end{proof}
+  \end{example}
+\end{theorem}
+
 % --- Bibliography ---
 
 % \bibliography{../tex_settings/References}
