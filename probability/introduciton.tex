@@ -244,6 +244,35 @@ We want to take two approaches to defining the real numbers: the first is by usi
     Suppose $L_1$ and $L_2$ are both least upper bounds of $T$. Then by definition, $L_1 \leq L_2$ and $L_2 \leq L_1$, which implies that $L_1 = L_2$. Therefore, the least upper bound is unique.
 \end{proof}
 
+
+\subsection{Bottom-top: Constructing Real Numbers from Integers}
+We will get from integers $\Z$ to rationals $\Q$ to real numbers $\R$.
+\subsubsection{Constructing \texorpdfstring{$\Q$}{Q} from \texorpdfstring{$\Z$}{Z}}
+
+Let's define $P = \{ \Z \times (\Z \setminus \{0\}) = (a,b) : a \in \Z, b \in \Z \setminus \{0\} \}$. Also define an equivalence relation $\sim$ on $P$ such that $(a,b) \sim (c,d)$ if and only if $ad = bc$.\\
+Finally we can define $\Q = P / \sim = \{[(a,b)] : (a,b) \in. P\}$ (read $P$ modulo $\sim$).
+
+\subsubsection{Constructing \texorpdfstring{$\R$}{R} from \texorpdfstring{$\Q$}{Q}}
+
+\begin{definition}[Cut]
+    A cut is a subset $C \subseteq \Q$ such that:
+    \begin{enumerate}
+        \item $C$ is non-empty and $C \neq \Q$.
+        \item $\forall x \in C, \exists y \in \Q$ such that $y < x$ and $y \in C$.
+    \end{enumerate}
+\end{definition}
+We can think of a cut as a way to partition the rational numbers $( -\infty, r) \cap \Q$ for some $r \in \R$.
+With the definition of a cut, we can define $\tilde{\R}$ as the set of all cuts in $\Q$. 
+\[
+    \tilde{\R} = \{ C \subseteq \Q : C \text{ is a cut} \}
+\]
+Now we want to define the isomorphism between $\tilde{\R}$ and $\R$. We can define a mapping $f: \tilde{\R} \to \R$ such that for each cut $C \in \tilde{R}$, we can define a function $f(C) = r$ where $r$ is the unique real number such that $C = \{ x \in \Q : x < r \}$.
+\begin{lemma} 
+    The function $f : \tilde{\R} \to \R$ given by $f(C) = r$ is well-defined and is a bijection.
+\end{lemma}
+\begin{proof}
+
+\end{proof}
 % --- Bibliography ---
 
 % \bibliography{../tex_settings/References}
